@@ -7,7 +7,7 @@ $config = @{
   target = "misc"
 }
 
-function get-searchStatusExpr{
+function get-searchStatusExpr {
   param(
     [string] $d_or_u
   )
@@ -20,13 +20,50 @@ function get-searchStatusExpr{
   }
 }
 
-$searchStatusExpr = get-searchStatusExpr $d_or_u
-foreach ($obj in (get-childitem -Path $config.target))
-{
-  $res = select-string -path $obj.fullname -pattern $searchStatusExpr
-  if ($searchKeyword -ne "") {
-    $res = $res | where {$_.line -like "*${searchKeyword}*" -or $_.filename -like "*${searchKeyword}*"}
+function get-alltodo {
+  param(
+    [string] $path
+  )
+  process {
+    return select-string -path "${path}/*" -pattern "^[-x].*" 
   }
 }
 
+
+function filter-status {
+  param(
+    [Parameter(Mandatory=$true)] [object] $todo,
+    [string] $d_or_u
+  )
+  process {
+    $expr = "- *"
+    if ($d_or_u -eq "d") {
+      $expr = "x *"
+    }
+    return $todo | where {$_.line -like $expr}
+  }
+}
+
+
+function filter-keyword {
+  param(
+    [Parameter(Mandatory=$true)] [object] $todo,
+    [string] $keyword
+  )
+  process {
+    if ($keyword -ne "") {
+      return $todo | where {$_.line -like "*${keyword}*" -or $_.filename -like "*${keyword}*"}
+    }
+    return $todo
+  }
+}
+
+
+$all = get-alltodo $config.target
+
+$res = filter-status $all $d_or_u
+
+$res = filter-keyword $res $searchKeyword
+
 $res
+
