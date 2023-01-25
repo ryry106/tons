@@ -7,19 +7,6 @@ $config = @{
   target = "misc"
 }
 
-function get-searchStatusExpr {
-  param(
-    [string] $d_or_u
-  )
-  process {
-    $res = "^-.*"
-    if ($d_or_u -eq "d") {
-      $res = "^x.*"
-    }
-    return $res
-  }
-}
-
 function get-alltodo {
   param(
     [string] $path
@@ -66,4 +53,14 @@ $res = filter-status $all $d_or_u
 $res = filter-keyword $res $searchKeyword
 
 $res
+
+
+
+
+foreach ($i in ($all | group-object -property filename | select name)) {
+  $tmp = $all | where {$_.filename -eq $i.name}
+  $tmpAllCount = ($tmp | measure).count
+  $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
+  $tmpUnDoneCount, $tmpAllCount, $i.name -join " | "
+}
 
