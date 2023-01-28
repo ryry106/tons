@@ -1,3 +1,9 @@
+# ### Feature
+# - todo集計スクリプト
+# 
+# ### Dependency
+# - PowerShell 7.3.1
+
 Param(
     [Parameter(Mandatory=$true)] [string] $d_or_u,
     [string] $searchKeyword
