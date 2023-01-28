@@ -22,7 +22,6 @@ function get-alltodo {
   }
 }
 
-
 function filter-status {
   param(
     [Parameter(Mandatory=$true)] [object] $todo,
@@ -78,15 +77,14 @@ function display-summary {
   }
 }
 
+function main {
+  $all = get-alltodo $config.target
 
+  $res = filter-status $all $d_or_u
+  $res = filter-keyword $res $searchKeyword
 
-$all = get-alltodo $config.target
+  display-todolist $res
+  display-summary $all
+}
 
-$res = filter-status $all $d_or_u
-
-$res = filter-keyword $res $searchKeyword
-
-
-display-todolist $res
-display-summary $all
-
+main
