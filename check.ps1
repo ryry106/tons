@@ -51,6 +51,34 @@ function filter-keyword {
   }
 }
 
+function display-todolist {
+  param(
+    [Parameter(Mandatory=$true)] [object] $todo
+  )
+  process {
+    echo ""
+    echo "-- todo list ---"
+    $todo
+  }
+}
+
+function display-summary {
+  param(
+    [Parameter(Mandatory=$true)] [object] $todo
+  )
+  process {
+    echo ""
+    echo "-- summary ---"
+    foreach ($i in ($all | group-object -property filename | select name)) {
+      $tmp = $all | where {$_.filename -eq $i.name}
+      $tmpAllCount = ($tmp | measure).count
+      $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
+      $tmpUnDoneCount, $tmpAllCount, $i.name -join " | "
+    }
+  }
+}
+
+
 
 $all = get-alltodo $config.target
 
@@ -58,15 +86,7 @@ $res = filter-status $all $d_or_u
 
 $res = filter-keyword $res $searchKeyword
 
-$res
 
-
-
-
-foreach ($i in ($all | group-object -property filename | select name)) {
-  $tmp = $all | where {$_.filename -eq $i.name}
-  $tmpAllCount = ($tmp | measure).count
-  $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
-  $tmpUnDoneCount, $tmpAllCount, $i.name -join " | "
-}
+display-todolist $res
+display-summary $all
 
