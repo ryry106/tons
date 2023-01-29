@@ -73,8 +73,8 @@ function display-summary {
   process {
     echo ""
     echo "-- summary ---"
-    foreach ($i in ($all | group-object -property filename | select name)) {
-      $tmp = $all | where {$_.filename -eq $i.name}
+    foreach ($i in ($todo | group-object -property filename | select name)) {
+      $tmp = $todo | where {$_.filename -eq $i.name}
       $tmpAllCount = ($tmp | measure).count
       $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
 
@@ -86,11 +86,11 @@ function display-summary {
 function main {
   $all = get-alltodo $config.target
 
-  $res = filter-status $all $adu
-  $res = filter-keyword $res $searchKeyword
+  $filtedKw = filter-keyword $all $searchKeyword
+  $filted = filter-status $filtedKw $adu
 
-  display-todolist $res
-  display-summary $all
+  display-todolist $filted
+  display-summary $filtedKw
 }
 
 main
