@@ -5,7 +5,7 @@
 # - PowerShell 7.3.1
 
 Param(
-    [Parameter(Mandatory=$true)] [string] $d_or_u,
+    [string] $adu = "a", # all / done / undoneを指定
     [string] $searchKeyword
 )
 
@@ -25,11 +25,15 @@ function get-alltodo {
 function filter-status {
   param(
     [Parameter(Mandatory=$true)] [object] $todo,
-    [string] $d_or_u
+    [string] $adu
   )
   process {
+    if ($adu -eq "a") {
+      return $todo
+    }
+
     $expr = "- *"
-    if ($d_or_u -eq "d") {
+    if ($adu -eq "d") {
       $expr = "x *"
     }
     return $todo | where {$_.line -like $expr}
@@ -57,6 +61,7 @@ function display-todolist {
   process {
     echo ""
     echo "-- todo list ---"
+
     $todo
   }
 }
@@ -72,6 +77,7 @@ function display-summary {
       $tmp = $all | where {$_.filename -eq $i.name}
       $tmpAllCount = ($tmp | measure).count
       $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
+
       $tmpUnDoneCount, $tmpAllCount, $i.name -join " | "
     }
   }
@@ -80,7 +86,7 @@ function display-summary {
 function main {
   $all = get-alltodo $config.target
 
-  $res = filter-status $all $d_or_u
+  $res = filter-status $all $adu
   $res = filter-keyword $res $searchKeyword
 
   display-todolist $res
