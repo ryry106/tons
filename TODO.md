@@ -3,3 +3,4 @@
 - [x] : -aduでall、done、undoneかを選択できるように。デフォルトはall
 - [x] : ファイル名をわかりやすく変える
 - [x] : テストのmakeを
+- [x] : summaryを見やすく

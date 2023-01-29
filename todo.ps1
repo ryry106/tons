@@ -3,14 +3,19 @@
 # 
 # ### Dependency
 # - PowerShell 7.3.1
+#
+# ### usage
+# pwsh todo.ps1 s
+# pwsh todo.ps1 d
 
 Param(
-    [string] $adu = "a", # all / done / undoneを指定
-    [string] $searchKeyword
+  [string] $mode = "s", # samary / detail
+  [string] $adu = "a", # all / done / undoneを指定
+  [string] $searchKeyword
 )
 
 $config = @{
-  target = "misc"
+  dir = "misc"
 }
 
 function get-alltodo {
@@ -18,7 +23,7 @@ function get-alltodo {
     [string] $path
   )
   process {
-    return select-string -path "${path}/*" -pattern "^[-x].*" 
+    return select-string -path "${path}/*" -pattern "^[-x].*"
   }
 }
 
@@ -54,14 +59,11 @@ function filter-keyword {
   }
 }
 
-function display-todolist {
+function display-detail {
   param(
     [Parameter(Mandatory=$true)] [object] $todo
   )
   process {
-    echo ""
-    echo "-- todo list ---"
-
     $todo
   }
 }
@@ -71,26 +73,31 @@ function display-summary {
     [Parameter(Mandatory=$true)] [object] $todo
   )
   process {
-    echo ""
-    echo "-- summary ---"
     foreach ($i in ($todo | group-object -property filename | select name)) {
       $tmp = $todo | where {$_.filename -eq $i.name}
-      $tmpAllCount = ($tmp | measure).count
-      $tmpUnDoneCount = ($tmp  | where {$_.line -like "- *"} | measure).count
-
-      $tmpUnDoneCount, $tmpAllCount, $i.name -join " | "
+      New-Object -TypeName PSObject -Property @{
+        undone = ($tmp  | where {$_.line -like "- *"} | measure).count
+        all = ($tmp | measure).count
+        name = $i.name
+      } | select undone, all, name
     }
   }
 }
 
 function main {
-  $all = get-alltodo $config.target
+  param(
+    [Parameter(Mandatory=$true)] [object] $mode
+  )
+  $all = get-alltodo $config.dir
 
   $filtedKw = filter-keyword $all $searchKeyword
   $filted = filter-status $filtedKw $adu
 
-  display-todolist $filted
-  display-summary $filtedKw
+  if ($mode -eq "s") {
+    display-summary $filtedKw
+  } else {
+    display-detail $filted
+  }
 }
 
-main
+main $mode
