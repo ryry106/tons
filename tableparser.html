@@ -3,8 +3,6 @@
 <head>
   <script>
     window.addEventListener('load', (event) => {
-      document.querySelector("#res").textContent = document.querySelector("table").textContent
-
       // シンプルなハッシュに返還する
       const createTableHash = () => {
         return Array.from(document.querySelectorAll("tr")).map((trElm, index, array) => {
@@ -13,22 +11,28 @@
       }
 
       // 指定した列の空行を埋める
-      const emptySupply = (target, index) => {
+      const emptyComplement = (target, index) => {
+        if (!target) {
+          return target
+        }
+
         let supplyLastElm = ""
         return target.map(elm => {
-          if (elm[index] === "") {
-            elm[index] = supplyLastElm
+          const clone = elm.concat()
+          if (clone[index] === "") {
+            clone[index] = supplyLastElm
           }
-          supplyLastElm = elm[index]
-          return elm
+          supplyLastElm = clone[index]
+          return clone
         })
       }
 
       (() => {
         const tableHash = createTableHash()
-        let s1 = emptySupply(tableHash, 0)
-        let s2 = emptySupply(tableHash, 1)
-        console.log(tableHash)
+
+        let s1 = emptyComplement(tableHash, 0)
+        let s2 = emptyComplement(tableHash, 1)
+
       })()
 
     });
@@ -62,12 +66,21 @@
         <td></td>
         <td>3-2</td>
       </tr>
+      <tr>
+        <td></td>
+        <td>20</td>
+        <td></td>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>30-1</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>30-2</td>
+      </tr>
     </table>
-  </div>
-  <div>
-    <label>-- script result --</label>
-  </div>
-  <div id="res">
   </div>
 </body>
 
