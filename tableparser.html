@@ -1,0 +1,74 @@
+<html>
+
+<head>
+  <script>
+    window.addEventListener('load', (event) => {
+      document.querySelector("#res").textContent = document.querySelector("table").textContent
+
+      // シンプルなハッシュに返還する
+      const createTableHash = () => {
+        return Array.from(document.querySelectorAll("tr")).map((trElm, index, array) => {
+          return Array.from(trElm.querySelectorAll("td")).map(tdElm => tdElm.textContent)
+        })
+      }
+
+      // 指定した列の空行を埋める
+      const emptySupply = (target, index) => {
+        let supplyLastElm = ""
+        return target.map(elm => {
+          if (elm[index] === "") {
+            elm[index] = supplyLastElm
+          }
+          supplyLastElm = elm[index]
+          return elm
+        })
+      }
+
+      (() => {
+        const tableHash = createTableHash()
+        let s1 = emptySupply(tableHash, 0)
+        let s2 = emptySupply(tableHash, 1)
+        console.log(tableHash)
+      })()
+
+    });
+  </script>
+</head>
+
+<body>
+  <div>
+    <table>
+      <tr>
+        <td>h1</td>
+        <td>h2</td>
+        <td>h3</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>2</td>
+        <td></td>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>3-1</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>3-2</td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <label>-- script result --</label>
+  </div>
+  <div id="res">
+  </div>
+</body>
+
+</html>
