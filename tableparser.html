@@ -2,16 +2,15 @@
 
 <head>
   <script>
-    window.addEventListener('load', (event) => {
-      // シンプルなハッシュに返還する
-      const createTableHash = () => {
-        return Array.from(document.querySelectorAll("tr")).map((trElm, index, array) => {
+    const runner = () => {
+      const convertTable2Array = () => {
+        return Array.from(document.querySelectorAll("tr")).map((trElm) => {
           return Array.from(trElm.querySelectorAll("td")).map(tdElm => tdElm.textContent)
         })
       }
 
       // 指定した列の空行を埋める
-      const emptyComplement = (target, index) => {
+      const emptyColumnComplement = (target, index) => {
         if (!target) {
           return target
         }
@@ -28,14 +27,20 @@
       }
 
       (() => {
-        const tableHash = createTableHash()
+        const tableArray = convertTable2Array()
 
-        let s1 = emptyComplement(tableHash, 0)
-        let s2 = emptyComplement(tableHash, 1)
+        let s1 = emptyColumnComplement(tableArray, 0)
+        let s2 = emptyColumnComplement(s1, 1)
+
+        console.log(s1)
+        console.log(s2)
 
       })()
 
-    });
+    }
+  </script>
+  <script>
+    window.addEventListener('load', (event) => {runner()});
   </script>
 </head>
 
