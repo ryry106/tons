@@ -5,18 +5,15 @@
 # - PowerShell 7.3.1
 #
 # ### usage
-# pwsh todo.ps1 s
-# pwsh todo.ps1 d
+# pwsh todo.ps1 misc s
+# pwsh todo.ps1 misc d
 
 Param(
+  [Parameter(Mandatory=$true)] [string] $dir,
   [string] $mode = "s", # samary / detail
   [string] $adu = "a", # all / done / undoneを指定
-  [string] $searchKeyword
+  [string] $keyword
 )
-
-$config = @{
-  dir = "misc"
-}
 
 function get-alltodo {
   param(
@@ -88,14 +85,14 @@ function main {
   param(
     [Parameter(Mandatory=$true)] [object] $mode
   )
-  $all = get-alltodo $config.dir
+  $all = get-alltodo $dir
 
-  $filtedKw = filter-keyword $all $searchKeyword
-  $filted = filter-status $filtedKw $adu
+  $filtedKw = filter-keyword $all $keyword
 
   if ($mode -eq "s") {
     display-summary $filtedKw
   } else {
+    $filted = filter-status $filtedKw $adu
     display-detail $filted
   }
 }
