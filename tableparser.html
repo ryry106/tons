@@ -2,7 +2,7 @@
 
 <head>
   <script>
-    const runner = () => {
+    const parser = () => {
       const convertTable2Array = () => {
         return Array.from(document.querySelectorAll("tr")).map((trElm) => {
           return Array.from(trElm.querySelectorAll("td")).map(tdElm => tdElm.textContent)
@@ -11,22 +11,18 @@
 
       // 指定した列の空行を埋める
       const emptyColumnComplement = (target, index) => {
-        if (!target) {
-          return target
-        }
+        if (!target) return target
 
         let supplyLastElm = ""
         return target.map(elm => {
           const clone = elm.concat()
-          if (clone[index] === "") {
-            clone[index] = supplyLastElm
-          }
+          if (clone[index] === "") clone[index] = supplyLastElm
           supplyLastElm = clone[index]
           return clone
         })
       }
 
-      (() => {
+      (run = () => {
         const tableArray = convertTable2Array()
 
         let s1 = emptyColumnComplement(tableArray, 0)
@@ -35,12 +31,19 @@
         console.log(s1)
         console.log(s2)
 
+        console.log(
+          s2.map(elm => {
+            if (!elm[2]) return ""
+            return elm[0] + elm[1] + elm[2]
+          }).filter(elm => elm)
+        )
+
       })()
 
     }
   </script>
   <script>
-    window.addEventListener('load', (event) => {runner()});
+    window.addEventListener('load', (event) => {parser()})
   </script>
 </head>
 
