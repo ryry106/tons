@@ -88,6 +88,10 @@ function main {
   $all = get-alltodo $dir
 
   $filtedKw = filter-keyword $all $keyword
+  if ($filtedKw -eq $null) {
+    echo "empty selected"
+    return
+  }
 
   if ($mode -eq "s") {
     display-summary $filtedKw
