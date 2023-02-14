@@ -42,10 +42,14 @@ gantt
     $res += "  dateFormat " + $datetimeFormat + $eol
     $res += $eol
     $sections = $tasks | format-table -hidetableheaders section | sort | unique |  where { $_ -ne "" }
+    $num = 1
     foreach($section in $sections) {
       $res += "section " + $section  + $eol
       foreach($task in ($tasks | where { $_.section -eq $section })) {
-        $res += $task.name + ":" + $task.name + "," + $task.start + "," + $task.end + $eol
+        $id = Write-Output("{0:d3}" -f $num)
+        $res += $task.name + ":" + $id + "," + $task.start + "," + $task.end + $eol
+        echo "tsts"
+        $num++
       }
     }
     $res +=  @'
