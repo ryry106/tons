@@ -10,13 +10,14 @@
 # - PowerShell 7.3.1
 #
 # ### usage
-# pwsh gantt.ps1 > result.html
+# ./gantt.ps1 -in $testobj -title sample > result.html
 
-$config = @{
-  ganttTitle = "sample"
-  datetimeFormat = "YYYY-MM-DD"
-  eol = "`n"
-}
+Param(
+  [Parameter(Mandatory=$true)] [object] $inputObj,
+  [Parameter(Mandatory=$true)] [string] $title,
+  [string] $datetimeFormat = "YYYY-MM-DD",
+  [string] $eol = "`n"
+)
 
 function template {
   param(
@@ -35,13 +36,13 @@ function template {
   <div class="mermaid">
 gantt
 '@
-    $res += $config.eol
-    $res += "  title " + $config.ganttTitle + $config.eol
-    $res += "  dateFormat " + $config.datetimeFormat + $config.eol
-    $res += "  section Section" + $config.eol
-    $res += $config.eol
+    $res += $eol
+    $res += "  title " + $ganttTitle + $eol
+    $res += "  dateFormat " + $datetimeFormat + $eol
+    $res += "  section Section" + $eol
+    $res += $eol
     foreach($task in $tasks) {
-      $res += $task.name + ":" + $task.name + "," + $task.start + "," + $task.end + $config.eol
+      $res += $task.name + ":" + $task.name + "," + $task.start + "," + $task.end + $eol
     }
     $res +=  @'
   </div>
@@ -58,26 +59,7 @@ gantt
 }
 
 
-function dummy {
-  $res = [System.Collections.ArrayList]::new()
-  $tmp = New-Object -TypeName PSObject -Property @{
-    name = "task1"
-    start = "2014-01-01"
-    end = "2014-01-02"
-  }
-  [void]$res.add($tmp)
-  $tmp = New-Object -TypeName PSObject -Property @{
-    name = "task2"
-    start = "2014-01-02"
-    end = "2014-01-03"
-  }
-  [void]$res.add($tmp)
-  return $res
-}
-
-
 function main {
-  $tmp = dummy
-  template $tmp
+  template $inputObj
 }
 main
