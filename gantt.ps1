@@ -1,6 +1,7 @@
 # ### Feature
 # - 以下の要素を持ったオブジェクト配列からガントチャートのhtmlを作成する
 # @{
+#     section = "section1"
 #     name = "task1"
 #     start = "2014-01-01"
 #     end = "2014-01-02"
@@ -10,7 +11,7 @@
 # - PowerShell 7.3.1
 #
 # ### usage
-# ./gantt.ps1 -in $testobj -title sample > result.html
+# ./gantt.ps1 -inputObj $testobj -title sample > result.html
 
 Param(
   [Parameter(Mandatory=$true)] [object] $inputObj,
@@ -37,12 +38,15 @@ function template {
 gantt
 '@
     $res += $eol
-    $res += "  title " + $ganttTitle + $eol
+    $res += "  title " + $title + $eol
     $res += "  dateFormat " + $datetimeFormat + $eol
-    $res += "  section Section" + $eol
     $res += $eol
-    foreach($task in $tasks) {
-      $res += $task.name + ":" + $task.name + "," + $task.start + "," + $task.end + $eol
+    $sections = $tasks | format-table -hidetableheaders section | sort | unique |  where { $_ -ne "" }
+    foreach($section in $sections) {
+      $res += "section " + $section  + $eol
+      foreach($task in ($tasks | where { $_.section -eq $section })) {
+        $res += $task.name + ":" + $task.name + "," + $task.start + "," + $task.end + $eol
+      }
     }
     $res +=  @'
   </div>
