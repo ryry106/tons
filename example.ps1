@@ -7,3 +7,6 @@
 
 # map
 ./misc/example-obj.ps1 | foreach { $_.body + "add" }
+
+# file hash
+(get-filehash gantt.ps1).hash
