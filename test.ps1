@@ -1,6 +1,6 @@
 # filter.ps1
 $exampleObjA = ./misc/example-obj-a.ps1
-if ((./filter.ps1 $exampleObjA "is").Length -ne 3 -or (./filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./filter.ps1 $exampleObjA "2").Length -ne 1) { echo "filter is fail." }
+if ((./filter.ps1 $exampleObjA "is").Length -ne 3 -or (./filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./filter.ps1 $exampleObjA "2").Length -ne 1 -or (./filter.ps1 $exampleObjA "y" -properties str1).Length -ne 0 -or (./filter.ps1 $exampleObjA "y" -properties str2).Length -ne 1) { echo "filter is fail." }
 
 # gantt.ps1
 $dummyGanttInput = ./misc/dummy-gantt-input.ps1
