@@ -48,7 +48,6 @@ gantt
       foreach($task in ($tasks | where { $_.section -eq $section })) {
         $id = Write-Output("{0:d3}" -f $num)
         $res += $task.name + ":" + $id + "," + $task.start + "," + $task.end + $eol
-        echo "tsts"
         $num++
       }
     }
