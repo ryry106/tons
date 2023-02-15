@@ -19,6 +19,6 @@ $inputObj | where {
   foreach($prop in $properties) {
     $cat += $_.$prop
   }
-  $cat -like "*$key*"
+  $cat -like "*${key}*"
 }
 
