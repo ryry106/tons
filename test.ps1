@@ -1,6 +1,10 @@
+# filter.ps1
+$exampleObjA = ./misc/example-obj-a.ps1
+if ((./filter.ps1 $exampleObjA "is").Length -ne 3 -or (./filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./filter.ps1 $exampleObjA "2").Length -ne 1) { echo "filter is fail." }
+
 # gantt.ps1
-$inputObj = ./misc/dummy-gantt-input.ps1
-$actual = ./gantt.ps1 -inputObj $inputObj -title testgantt
+$dummyGanttInput = ./misc/dummy-gantt-input.ps1
+$actual = ./gantt.ps1 -inputObj $dummyGanttInput -title testgantt
 if ($actual.Split("section1").length -ne 2 -or $actual.Split("section2").length -ne 2 -or $actual.Split("task1:001,2014-01-01,2014-01-02").length -ne 2 -or $actual.Split("task2:002,2014-01-02,2014-01-03").length -ne 2 -or $actual.Split("task3:003,2014-01-02,2014-01-03").length -ne 2) { echo "gantt is fail." }
 
 # todo.ps1
