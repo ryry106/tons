@@ -16,8 +16,8 @@ function summary {
     [Parameter(Mandatory=$true)] [object] $todo
   )
   $res = [System.Collections.ArrayList]::new()
-  foreach ($i in ($todo | group-object -property filename | select name)) {
-    $tmp = $todo | where {$_.filename -eq $i.name}
+  foreach ($i in ($todo | group-object -property path | select name)) {
+    $tmp = $todo | where {$_.path -eq $i.name}
     $resObj = New-Object -TypeName PSObject -Property @{
       undone = ($tmp  | where {$_.line -like "- *"} | measure).count
       all = ($tmp | measure).count
