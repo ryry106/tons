@@ -1,3 +1,3 @@
 @{
-  workDir = join-path (pwd).Path tests
+  workDir = join-path (pwd).Path tests/todolist
 }
