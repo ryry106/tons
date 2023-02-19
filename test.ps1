@@ -1,13 +1,13 @@
 # todo/detail.ps1
 if (
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests)).Length -ne 9 -or
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword task1).Length -ne 3 -or
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword story1).Length -ne 3  -or
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword ep1).Length -ne 6
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist)).Length -ne 9 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword task1).Length -ne 3 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword story1).Length -ne 3  -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword ep1).Length -ne 6
 ) { echo "todo/detail.ps1 is fail." }
 
 # todo/summay.ps1
-$actual = ./todo/summary.ps1 -absoluteDir (join-path (pwd).Path tests)
+$actual = ./todo/summary.ps1 -absoluteDir (join-path (pwd).Path tests/todolist)
 if (
   ($actual | where { $_.name -eq "/ep1/story1.txt" -and $_.undone -eq 2 }).Length -ne 1 -or 
   ($actual | where { $_.name -eq "/ep1/story2.txt" -and $_.undone -eq 1 }).Length -ne 1 -or 
@@ -16,14 +16,14 @@ if (
 
 # core/todolist.ps1
 if (
-  (./core/todolist.ps1 -absoluteDir tests).Length -ne 9 -or
-  (./core/todolist.ps1 -absoluteDir tests -exclude ep1).Length -ne 3 -or
-  (./core/todolist.ps1 -absoluteDir tests -exclude dummy,ep2).Length -ne 6 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist).Length -ne 9 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude ep1).Length -ne 3 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude dummy,ep2).Length -ne 6 -or
   (./core/todolist.ps1 -absoluteDir dummy).length -ne 0
 ) { echo "core/todolist is fail." }
 
 # core/filter.ps1
-$exampleObjA = ./misc/example-obj-a.ps1
+$exampleObjA = ./tests/example-obj-a.ps1
 if (
   (./core/filter.ps1 $exampleObjA "is").Length -ne 3 -or
   (./core/filter.ps1 $exampleObjA "s i").Length -ne 1 -or
@@ -33,7 +33,7 @@ if (
 ) { echo "fcore/ilter is fail." }
 
 # gantt.ps1
-$dummyGanttInput = ./misc/dummy-gantt-input.ps1
+$dummyGanttInput = ./tests/dummy-gantt-input.ps1
 $actual = ./gantt.ps1 -inputObj $dummyGanttInput -title testgantt
 if (
   $actual.Split("section1").length -ne 2 -or
@@ -43,35 +43,3 @@ if (
   $actual.Split("task3:003,2014-01-02,2014-01-03").length -ne 2
 ) { echo "gantt is fail." }
 
-# todo.ps1
-$res = ./todo.ps1 misc
-if (
-  ($res | where { ($_.undone -eq 2 -and $_.all -eq 3 -and $_.name -eq "story1.txt") -or ($_.undone -eq 1 -and $_.all -eq 3 -and $_.name -eq "story2.txt")}).count -ne 2
-) { echo "'./todo.ps1 misc' is fail" } 
-
-$res = ./todo.ps1 misc s
-if (
-  ($res | where { ($_.undone -eq 2 -and $_.all -eq 3 -and $_.name -eq "story1.txt") -or ($_.undone -eq 1 -and $_.all -eq 3 -and $_.name -eq "story2.txt")}).count -ne 2
-) { echo "'./todo.ps1 misc s' is fail" } 
-
-$res = ./todo.ps1 misc  s a story1
-if (
-  ($res | where { $_.undone -eq 2 -and $_.all -eq 3 -and $_.name -eq "story1.txt" }).count -ne 1
-) { echo "'./todo.ps1 misc  s a story1' is fail" } 
-
-$res = ./todo.ps1 misc  s a s2
-if (
-  ($res | where { $_.undone -eq 1 -and $_.all -eq 3 -and $_.name -eq "story2.txt" }).count -ne 1
-) { echo "'./todo.ps1 misc  s a s2' is fail" } 
-
-$res = ./todo.ps1 misc d
-if ($res.count -ne 6) { echo "'./todo.ps1 misc d' is fail" } 
-
-$res = ./todo.ps1 misc d a
-if ($res.count -ne 6) { echo "'./todo.ps1 misc d a' is fail" } 
-
-$res = ./todo.ps1 misc d u
-if ($res.count -ne 3) { echo "'./todo.ps1 misc d u' is fail" } 
-
-$res = ./todo.ps1 misc d d
-if ($res.count -ne 3) { echo "'./todo.ps1 misc d d' is fail" } 

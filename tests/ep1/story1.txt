@@ -1,3 +1,0 @@
-x task1 of s1
-- task2 of s1
-- task3 of s1
