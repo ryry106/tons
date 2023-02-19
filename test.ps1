@@ -1,3 +1,8 @@
+# core/todolist.ps1
+if (((./core/todolist.ps1 -dir tests).Length) -ne 9 -or ((./core/todolist.ps1 -dir tests -exclude ep1).Length -ne 3) -or ((./core/todolist.ps1 -dir tests -exclude dummy,ep2).Length -ne 6) -or ((./core/todolist.ps1 -dir dummy).length -ne 0)) {
+  echo "todolist is fail."
+}
+
 # filter.ps1
 $exampleObjA = ./misc/example-obj-a.ps1
 if ((./filter.ps1 $exampleObjA "is").Length -ne 3 -or (./filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./filter.ps1 $exampleObjA "2").Length -ne 1 -or (./filter.ps1 $exampleObjA "y" -properties str1).Length -ne 0 -or (./filter.ps1 $exampleObjA "y" -properties str2).Length -ne 1) { echo "filter is fail." }
