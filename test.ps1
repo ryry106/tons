@@ -67,7 +67,7 @@ coreFilterTest
 # gantt.ps1
 function ganttTest {
   $dummyGanttInput = ./tests/dummy-gantt-input.ps1
-  $actual = ./gantt.ps1 -inputObj $dummyGanttInput -title testgantt
+  $actual = ./gantt/gantt.ps1 -inputObj $dummyGanttInput -title testgantt
   if (
     $actual.Split("section1").length -ne 2 -or
     $actual.Split("section2").length -ne 2 -or
