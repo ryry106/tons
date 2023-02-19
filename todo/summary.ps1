@@ -37,6 +37,6 @@ function display {
 
 # main
 $corePath = join-path ($MyInvocation.MyCommand.path | Split-Path -Parent | Split-Path -Parent) core
-$todo = . (join-path $corePath todolist.ps1) -dir $absoluteDir
+$todo = . (join-path $corePath todolist.ps1) -absoluteDir $absoluteDir
 $summary = summary $todo
 display $summary

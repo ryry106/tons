@@ -8,10 +8,10 @@ if (
 
 # core/todolist.ps1
 if (
-  (./core/todolist.ps1 -dir tests).Length -ne 9 -or
-  (./core/todolist.ps1 -dir tests -exclude ep1).Length -ne 3 -or
-  (./core/todolist.ps1 -dir tests -exclude dummy,ep2).Length -ne 6 -or
-  (./core/todolist.ps1 -dir dummy).length -ne 0
+  (./core/todolist.ps1 -absoluteDir tests).Length -ne 9 -or
+  (./core/todolist.ps1 -absoluteDir tests -exclude ep1).Length -ne 3 -or
+  (./core/todolist.ps1 -absoluteDir tests -exclude dummy,ep2).Length -ne 6 -or
+  (./core/todolist.ps1 -absoluteDir dummy).length -ne 0
 ) { echo "core/todolist is fail." }
 
 # core/filter.ps1

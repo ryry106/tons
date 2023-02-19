@@ -9,9 +9,9 @@
 # ./core/todolist.ps1 -dir tests -exclude ep1
 
 Param(
-  [Parameter(Mandatory=$true)] [string] $dir,
+  [Parameter(Mandatory=$true)] [string] $absoluteDir,
   [string[]] $excludeDirList = @()
 )
-if (test-path $dir) {
-  get-childitem -path $dir -exclude $excludeDirList | get-childitem -recurse | select-string -pattern "^[-x].*"
+if (test-path $absoluteDir) {
+  get-childitem -dir $absoluteDir -exclude $excludeDirList | get-childitem -recurse | select-string -pattern "^[-x].*"
 }
