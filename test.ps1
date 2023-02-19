@@ -1,11 +1,19 @@
+# todo/summay.ps1
+$actual = ./todo/summary.ps1 -absoluteDir (join-path (pwd).Path tests)
+if (
+  (($actual | where { $_.name -eq "/ep1/story1.txt" -and $_.undone -eq 2 }).Length -ne 1) -or 
+  (($actual | where { $_.name -eq "/ep1/story2.txt" -and $_.undone -eq 1 }).Length -ne 1) -or 
+  (($actual | where { $_.name -eq "/ep2/story3.txt" -and $_.undone -eq 2 }).Length -ne 1) 
+) { echo "todo/summay.ps1 is fail." }
+
 # core/todolist.ps1
 if (((./core/todolist.ps1 -dir tests).Length) -ne 9 -or ((./core/todolist.ps1 -dir tests -exclude ep1).Length -ne 3) -or ((./core/todolist.ps1 -dir tests -exclude dummy,ep2).Length -ne 6) -or ((./core/todolist.ps1 -dir dummy).length -ne 0)) {
-  echo "todolist is fail."
+  echo "core/todolist is fail."
 }
 
-# filter.ps1
+# core/filter.ps1
 $exampleObjA = ./misc/example-obj-a.ps1
-if ((./filter.ps1 $exampleObjA "is").Length -ne 3 -or (./filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./filter.ps1 $exampleObjA "2").Length -ne 1 -or (./filter.ps1 $exampleObjA "y" -properties str1).Length -ne 0 -or (./filter.ps1 $exampleObjA "y" -properties str2).Length -ne 1) { echo "filter is fail." }
+if ((./core/filter.ps1 $exampleObjA "is").Length -ne 3 -or (./core/filter.ps1 $exampleObjA "s i").Length -ne 1 -or (./core/filter.ps1 $exampleObjA "2").Length -ne 1 -or (./core/filter.ps1 $exampleObjA "y" -properties str1).Length -ne 0 -or (./core/filter.ps1 $exampleObjA "y" -properties str2).Length -ne 1) { echo "fcore/ilter is fail." }
 
 # gantt.ps1
 $dummyGanttInput = ./misc/dummy-gantt-input.ps1
