@@ -1,7 +1,7 @@
 # todo/detail.ps1
 if (
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist)).Length -ne 9 -or
-  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword task1).Length -ne 3 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist)).Length -ne 12 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword task1).Length -ne 4 -or
   (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword story1).Length -ne 3  -or
   (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests/todolist) -keyword ep1).Length -ne 6
 ) { echo "todo/detail.ps1 is fail." }
@@ -9,16 +9,17 @@ if (
 # todo/summay.ps1
 $actual = ./todo/summary.ps1 -absoluteDir (join-path (pwd).Path tests/todolist)
 if (
-  ($actual | where { $_.name -eq "/ep1/story1.txt" -and $_.undone -eq 2 }).Length -ne 1 -or 
-  ($actual | where { $_.name -eq "/ep1/story2.txt" -and $_.undone -eq 1 }).Length -ne 1 -or 
-  ($actual | where { $_.name -eq "/ep2/story3.txt" -and $_.undone -eq 2 }).Length -ne 1 
+  ($actual | where { $_.name -eq "/ep1/story1.txt" -and $_.undone -eq 2 }).Length -ne 1 -or
+  ($actual | where { $_.name -eq "/ep1/story2.txt" -and $_.undone -eq 1 }).Length -ne 1 -or
+  ($actual | where { $_.name -eq "/ep2/story3.txt" -and $_.undone -eq 2 }).Length -ne 1 -or
+  ($actual | where { $_.name -eq "/story0.txt" -and $_.undone -eq 2 }).Length -ne 1
 ) { echo "todo/summay.ps1 is fail." }
 
 # core/todolist.ps1
 if (
-  (./core/todolist.ps1 -absoluteDir tests/todolist).Length -ne 9 -or
-  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude ep1).Length -ne 3 -or
-  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude dummy,ep2).Length -ne 6 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist).Length -ne 12 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude ep1).Length -ne 6 -or
+  (./core/todolist.ps1 -absoluteDir tests/todolist -exclude dummy,ep2).Length -ne 9 -or
   (./core/todolist.ps1 -absoluteDir dummy).length -ne 0
 ) { echo "core/todolist is fail." }
 

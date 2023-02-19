@@ -13,5 +13,7 @@ Param(
   [string[]] $excludeDirList = @()
 )
 if (test-path $absoluteDir) {
+  # 2つのselect-string結果がマージされる
   get-childitem -dir $absoluteDir -exclude $excludeDirList | get-childitem -recurse | select-string -pattern "^[-x].*"
+  select-string -path (join-path $absoluteDir "*") -pattern "^[-x].*"
 }
