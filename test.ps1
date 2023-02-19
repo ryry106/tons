@@ -1,3 +1,11 @@
+# todo/detail.ps1
+if (
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests)).Length -ne 9 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword task1).Length -ne 3 -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword story1).Length -ne 3  -or
+  (./todo/detail.ps1 -absoluteDir (join-path (pwd).Path tests) -keyword ep1).Length -ne 6
+) { echo "todo/detail.ps1 is fail." }
+
 # todo/summay.ps1
 $actual = ./todo/summary.ps1 -absoluteDir (join-path (pwd).Path tests)
 if (
