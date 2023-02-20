@@ -21,7 +21,7 @@ function summary {
     $resObj = New-Object -TypeName PSObject -Property @{
       undone = ($tmp  | where {$_.line -like "- *"} | measure).count
       all = ($tmp | measure).count
-      name = $tmp.path.split($absoluteDir)[1]
+      name = $i.name.substring($absoluteDir.length)
     }
     [void]$res.add($resObj)
   }
